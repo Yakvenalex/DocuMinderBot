@@ -133,7 +133,7 @@ async def get_tag_tree_for_user(session, user_id: int) -> List[Dict[str, Any]]:
     # Запрос для получения тегов и их связанных напоминаний для конкретного пользователя
     result = await session.execute(
         select(Reminder.id, Reminder.tags)  # Выбираем id напоминания и теги
-        .where(Reminder.user_id == user_id)  # Условие фильтрации по user_id
+        .filter_by(user_id=user_id)  # Условие фильтрации по user_id
         .options(joinedload(Reminder.tags))  # Загружаем связанные теги
     )
 
