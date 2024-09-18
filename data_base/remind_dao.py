@@ -129,7 +129,7 @@ async def delete_reminder_by_id(session, reminder_id: int) -> Optional[Reminder]
 
 
 @connection
-async def get_tag_tree_for_user(session, user_id: int) -> List[Dict[str, Any]]:
+async def get_tag_tree_reminder_for_user(session, user_id: int) -> List[Dict[str, Any]]:
     # Запрос для получения тегов и их связанных напоминаний для конкретного пользователя
     result = await session.execute(
         select(Reminder.id, Reminder.tags)  # Выбираем id напоминания и теги

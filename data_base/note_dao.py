@@ -124,3 +124,30 @@ async def delete_note_by_id(session, note_id: int) -> Optional[Note]:
 
     logger.info(f"Заметка с ID {note_id} успешно удалена.")
     return note
+
+
+@connection
+async def get_tag_tree_reminder_for_user(session, user_id: int) -> List[Dict[str, Any]]:
+    # Запрос для получения тегов и их связанных напоминаний для конкретного пользователя
+    result = await session.execute(
+        select(Note.id, Note.tags)  # Выбираем id напоминания и теги
+        .filter_by(user_id=user_id)  # Условие фильтрации по user_id
+        .options(joinedload(Note.tags))  # Загружаем связанные теги
+    )
+
+    notes = result.scalars().all()
+
+    # Если напоминания не найдены
+    if not notes:
+        logger.info(f"Теги для пользователя с ID {user_id} не найдены.")
+        return []
+
+    # Формируем дерево тегов
+    tag_tree = []
+    for reminder in notes:
+        tag_tree.append({
+            'note_id': reminder.id,
+            'tags': [tag.tag_text for tag in reminder.tags]
+        })
+
+    return tag_tree
