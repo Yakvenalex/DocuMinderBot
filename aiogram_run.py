@@ -1,6 +1,6 @@
 import asyncio
 from create_bot import bot, dp, admins
-from data_base.other_methods import create_tables
+from data_base.base import create_tables
 from handlers.user_router import user_router
 from handlers.note_router import note_router
 from aiogram.types import BotCommand, BotCommandScopeDefault
