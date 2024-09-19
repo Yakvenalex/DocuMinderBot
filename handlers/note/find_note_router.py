@@ -44,6 +44,7 @@ async def cmd_start(message: Message, state: FSMContext):
 
 @find_note_router.callback_query(F.data.startswith('date_note_'))
 async def find_note_to_date(call: CallbackQuery, state: FSMContext):
+    await call.answer()
     await state.clear()
     date_add = call.data.replace('date_note_', '')
     all_notes = await get_notes_by_user(user_id=call.from_user.id, date_add=date_add)
@@ -65,6 +66,7 @@ async def cmd_start(message: Message, state: FSMContext):
 
 @find_note_router.callback_query(F.data.startswith('content_type_note_'))
 async def find_note_to_date(call: CallbackQuery, state: FSMContext):
+    await call.answer()
     await state.clear()
     content_type = call.data.replace('content_type_note_', '')
     all_notes = await get_notes_by_user(user_id=call.from_user.id, content_type=content_type)
