@@ -31,7 +31,7 @@ async def stop_fsm(message: Message, state: FSMContext):
 
 
 @start_router.callback_query(F.data == 'main_menu')
-async def edit_note_text_process(call: CallbackQuery, state: FSMContext):
+async def main_menu_process(call: CallbackQuery, state: FSMContext):
     await state.clear()
     await call.answer('Вы вернулись в главное меню.')
     await call.message.answer(f"Привет, {call.from_user.full_name}! Выбери необходимое действие",

@@ -18,14 +18,14 @@ class AddNoteStates(StatesGroup):
 
 
 @add_note_router.message(F.text == '📝 Заметки')
-async def cmd_start(message: Message, state: FSMContext):
+async def start_note(message: Message, state: FSMContext):
     await state.clear()
     await message.answer('Ты в меню добавления заметок. Выбери необходимое действие.',
                          reply_markup=main_note_kb())
 
 
 @add_note_router.message(F.text == '📝 Добавить заметку')
-async def cmd_start(message: Message, state: FSMContext):
+async def start_add_note(message: Message, state: FSMContext):
     await state.clear()
     await message.answer('Отправь сообщение в любом формате (текст, медиа или медиа + текст). '
                          'В случае если к медиа требуется подпись - оставь ее в комментариях к медиа-файлу ',

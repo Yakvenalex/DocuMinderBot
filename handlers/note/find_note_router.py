@@ -15,13 +15,13 @@ class FindNoteStates(StatesGroup):
 
 
 @find_note_router.message(F.text == '📋 Просмотр заметок')
-async def cmd_start(message: Message, state: FSMContext):
+async def start_views_noti(message: Message, state: FSMContext):
     await state.clear()
     await message.answer('Выбери какие заметки отобразить', reply_markup=find_note_kb())
 
 
 @find_note_router.message(F.text == '📋 Все заметки')
-async def cmd_start(message: Message, state: FSMContext):
+async def all_views_noti(message: Message, state: FSMContext):
     await state.clear()
     all_notes = await get_notes_by_user(user_id=message.from_user.id)
     if all_notes:
@@ -32,7 +32,7 @@ async def cmd_start(message: Message, state: FSMContext):
 
 
 @find_note_router.message(F.text == '📅 По дате добавления')
-async def cmd_start(message: Message, state: FSMContext):
+async def date_views_noti(message: Message, state: FSMContext):
     await state.clear()
     all_notes = await get_notes_by_user(user_id=message.from_user.id)
     if all_notes:
@@ -54,7 +54,7 @@ async def find_note_to_date(call: CallbackQuery, state: FSMContext):
 
 
 @find_note_router.message(F.text == '📝 По типу контента')
-async def cmd_start(message: Message, state: FSMContext):
+async def content_type_views_noti(message: Message, state: FSMContext):
     await state.clear()
     all_notes = await get_notes_by_user(user_id=message.from_user.id)
     if all_notes:
@@ -65,7 +65,7 @@ async def cmd_start(message: Message, state: FSMContext):
 
 
 @find_note_router.callback_query(F.data.startswith('content_type_note_'))
-async def find_note_to_date(call: CallbackQuery, state: FSMContext):
+async def find_note_to_content_type(call: CallbackQuery, state: FSMContext):
     await call.answer()
     await state.clear()
     content_type = call.data.replace('content_type_note_', '')
@@ -76,7 +76,7 @@ async def find_note_to_date(call: CallbackQuery, state: FSMContext):
 
 
 @find_note_router.message(F.text == '🔍 Поиск по тексту')
-async def cmd_start(message: Message, state: FSMContext):
+async def text_views_noti(message: Message, state: FSMContext):
     await state.clear()
     all_notes = await get_notes_by_user(user_id=message.from_user.id)
     if all_notes:
@@ -88,7 +88,7 @@ async def cmd_start(message: Message, state: FSMContext):
 
 
 @find_note_router.message(F.text, FindNoteStates.text)
-async def cmd_start(message: Message, state: FSMContext):
+async def text_noti_process(message: Message, state: FSMContext):
     text_search = message.text.strip()
     all_notes = await get_notes_by_user(user_id=message.from_user.id, text_search=text_search)
     await state.clear()
