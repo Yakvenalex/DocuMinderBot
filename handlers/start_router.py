@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from data_base.dao import set_user
 from keyboards.reply_other_kb import main_kb
 
@@ -28,3 +28,11 @@ async def stop_fsm(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(f"Сценарий остановлен. Для выбора действия воспользуйся клавиатурой ниже",
                          reply_markup=main_kb())
+
+
+@start_router.callback_query(F.data == 'main_menu')
+async def edit_note_text_process(call: CallbackQuery, state: FSMContext):
+    await state.clear()
+    await call.answer('Вы вернулись в главное меню.')
+    await call.message.answer(f"Привет, {call.from_user.full_name}! Выбери необходимое действие",
+                              reply_markup=main_kb())
