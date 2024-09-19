@@ -1,7 +1,6 @@
 from sqlalchemy import select
-from create_bot import logger
 from .database import async_session, engine, Base
-from .models import Tag, User
+from .models import Tag
 
 
 def connection(func):
