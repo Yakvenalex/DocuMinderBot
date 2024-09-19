@@ -1,9 +1,12 @@
 import asyncio
 from create_bot import bot, dp, admins
 from data_base.base import create_tables
-from handlers.user_router import user_router
-from handlers.note_router import note_router
+from handlers.note.find_note_router import find_note_router
+from handlers.note.upd_note_router import upd_note_router
+from handlers.note.add_note_router import add_note_router
 from aiogram.types import BotCommand, BotCommandScopeDefault
+
+from handlers.start_router import start_router
 
 
 # Функция, которая настроит командное меню (дефолтное для всех пользователей)
@@ -34,8 +37,10 @@ async def stop_bot():
 
 async def main():
     # регистрация роутеров
-    dp.include_router(user_router)
-    dp.include_router(note_router)
+    dp.include_router(start_router)
+    dp.include_router(add_note_router)
+    dp.include_router(find_note_router)
+    dp.include_router(upd_note_router)
 
     # регистрация функций
     dp.startup.register(start_bot)

@@ -2,16 +2,15 @@ from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
-
-from data_base.user_dao import set_user
+from data_base.dao import set_user
 from keyboards.reply_other_kb import main_kb
 
-user_router = Router()
+start_router = Router()
 
 
 # Хендлер команды /start и кнопки "🏠 Главное меню"
-@user_router.message(F.text == '🏠 Главное меню')
-@user_router.message(CommandStart())
+@start_router.message(F.text == '🏠 Главное меню')
+@start_router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
     user = await set_user(tg_id=message.from_user.id,
@@ -24,7 +23,7 @@ async def cmd_start(message: Message, state: FSMContext):
     await message.answer(greeting, reply_markup=main_kb())
 
 
-@user_router.message(F.text == '❌ Остановить сценарий')
+@start_router.message(F.text == '❌ Остановить сценарий')
 async def stop_fsm(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(f"Сценарий остановлен. Для выбора действия воспользуйся клавиатурой ниже",
